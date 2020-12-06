@@ -2,10 +2,21 @@ const express = require('express');
 const router = express.Router();
 
 const { User } = require('../models/User');
+const { auth } = require('../middleware/auth');
 
 // -------------------------
 //          User
 // -------------------------
+
+router.get('/auth', auth, (req, res) => {
+  res.status(200).json({
+    _id: req.user._id,
+    name: req.user.name,
+    isAdmin: req.user.role === 0 ? false : true,
+    email: req.user.email,
+    image: req.user.image
+  });
+});
 
 router.post('/signup', (req, res) => {
   const user = new User(req.body);
@@ -41,6 +52,16 @@ router.post('/signin', (req, res) => {
           .json({ success: true, userId: user._id });
       });
     });
+  });
+});
+
+router.get('/logout', auth, (req, res) => {
+  User.findOneAndUpdate({ '_id': req.user._id }, { 'token': '', 'tokenExp': 0 }, function (err, user) {
+    if (err) {
+      return res.json({ success: false, err });
+    }
+    
+    return res.status(200).send({ success: true });
   });
 });
 
