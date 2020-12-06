@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const port = 5000;
 const mongoose = require('mongoose');
-mongoose.connect('', {
+const config = require('./config/key');
+mongoose.connect(config.mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
