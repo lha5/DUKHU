@@ -65,15 +65,29 @@ userSchema.methods.comparePassword = function (plainPassword, cb) {
 userSchema.methods.generateToken = function (cb) {
   const user = this;
   const token = jwt.sign(user._id.toHexString(), process.env.SECRET_TOKEN);
-  const oneHour = moment().add(1, 'hour').valueOf();
+  const tokenExpire = moment().add(1, 'hour').valueOf();
 
   user.token = token;
-  user.tokenExp = oneHour;
+  user.tokenExp = tokenExpire;
 
   user.save(function(err, user) {
     if (err) return cb(err);
 
     cb(null, user);
+  });
+};
+
+userSchema.statics.findByToken = function (token, cb) {
+  const user = this;
+
+  jwt.verify(token, process.env.SECRET_TOKEN, function (err, decoded) {
+    user.findOne({ '_id': decoded, 'token': token }, function (err, user) {
+      if (err) {
+        return cb(err);
+      }
+
+      cb(null, user);
+    });
   });
 };
 
