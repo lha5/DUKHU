@@ -65,4 +65,8 @@ router.get('/logout', auth, (req, res) => {
   });
 });
 
+router.post('/kakao/login', (req, res) => {});
+
+router.get('/kakao/logout', (req, res) => {});
+
 module.exports = router;
