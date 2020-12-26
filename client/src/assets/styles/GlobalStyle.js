@@ -32,6 +32,7 @@ const GlobalStyle = createGlobalStyle`
   * {
     font-family: 'NanumSquare';
     font-weight: normal;
+    color: ${props => props.theme.black};
   }
 
   body {

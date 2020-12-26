@@ -6,7 +6,8 @@ const deviceSize = {
 };
 
 const colors = {
-  primary: '#8675a9',
+  // primary: '#8675a9',
+  primary: '#c3aed6',
   success: '#2d884d',
   warning: '#fbc687',
   danger: '#d35d6e',
