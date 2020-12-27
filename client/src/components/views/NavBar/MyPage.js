@@ -10,7 +10,7 @@ const Container = styled.div`
 function MyPage() {
   return (
     <Container>
-      내 정보
+      로그인
     </Container>
   );
 };

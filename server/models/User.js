@@ -29,7 +29,12 @@ const userSchema = mongoose.Schema({
   },
   tokenExp: {
     type: Number
-  }
+  },
+  provider: {
+    type: Number,
+    default: 0
+  },
+  kakaoId: String,
 });
 
 userSchema.pre('save', function (next) {

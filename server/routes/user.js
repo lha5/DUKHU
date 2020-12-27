@@ -14,7 +14,9 @@ router.get('/auth', auth, (req, res) => {
     name: req.user.name,
     isAdmin: req.user.role === 0 ? false : true,
     email: req.user.email,
-    image: req.user.image
+    image: req.user.image,
+    provider: req.user.provider,
+    kakaoId: req.user.kakaoId
   });
 });
 
