@@ -1,7 +1,8 @@
 const { User } = require('../models/User');
 
 let auth = (req, res, next) => {
-  let token = req.cookies.dukhu_auth;
+  let token = req.cookies.user_auth;
+  console.log('사용자 쿠키:: ', token);
 
   User.findByToken(token, function (err, user) {
     if (err) {

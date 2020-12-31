@@ -23,7 +23,9 @@ const userSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
-  image: String,
+  image: {
+    type: String
+  },
   token: {
     type: String
   },
@@ -34,8 +36,13 @@ const userSchema = mongoose.Schema({
     type: Number,
     default: 0
   },
-  kakaoId: String,
-});
+  kakaoId: {
+    type: Number
+  },
+  connectedAt: {
+    type: Date
+  }
+}, { timestamps: true });
 
 userSchema.pre('save', function (next) {
   const user = this;
