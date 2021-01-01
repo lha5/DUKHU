@@ -92,32 +92,30 @@ router.post('/kakao/login', (req, res) => {
           return res.json({ success: false, message: 'fail to save new user info', err });
         }
 
-        newUser.generateToken((err, user1) => {
+        newUser.generateToken((err, user) => {
           if (err) {
             console.error('토큰 발행 실패');
             return res.status(400).json({ success: false, message: 'fail to generate token', err });
           }
   
-          res.cookie('user_authExp', user1.tokenExp);
+          // res.cookie('user_authExp', user.tokenExp);
           res
-            .cookie('user_auth', user1.token)
             .status(200)
-            .json({ success: true, userId: user1._id });
+            .json({ success: true, userId: user._id, user_auth: user.token, user_authExp: user.tokenExp });
         });
       });
     } else {
       console.log('기존에 로그인 한 적 있음');
-      user.generateToken((err, user2) => {
+      user.generateToken((err, user) => {
         if (err) {
           console.error('토큰 발행 실패');
           return res.status(400).json({ success: false, message: 'fail to generate token', err });
         }
 
-        res.cookie('user_authExp', user2.tokenExp);
+        // res.cookie('user_authExp', user.tokenExp);
         res
-          .cookie('user_auth', user2.token)
           .status(200)
-          .json({ success: true, userId: user2._id });
+          .json({ success: true, userId: user._id, user_auth: user.token, user_authExp: user.tokenExp });
       });
     }
   });
@@ -128,8 +126,8 @@ router.get('/kakao/logout', auth, (req, res) => {
     if (err) {
       return res.json({ success: false, err });
     }
-    res.clearCookie('user_authExp');
-    return res.clearCookie('user_auth').status(200).json({ success: true });
+    // res.clearCookie('user_authExp');
+    return res.status(200).json({ success: true });
   })
 });
 

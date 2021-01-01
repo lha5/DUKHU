@@ -41,8 +41,14 @@ function SigninPage(props) {
       .then(response => {
         console.log('응답 값?? ', response.status, response.data);
         if (response.status === 200) {
+          const { userToken } = response.data.user_auth;
+          const { userTokenExp } = response.data.user_authExp;
+
+          axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
+
           localStorage.setItem('userId', response.data.userId);
-          localStorage.setItem('token', dataToSubmit.response.access_token);
+          localStorage.setItem('forKakao', dataToSubmit.response.access_token);
+
           window.location.replace('/');
         } else {
           swal({
@@ -77,7 +83,6 @@ function SigninPage(props) {
 
   return (
     <Container>
-      <div>로그인 페이지</div>
       <KakaoLogin
         token={process.env.REACT_APP_KAKAO_JS_KEY}
         onSuccess={res => onSuccess(res)}

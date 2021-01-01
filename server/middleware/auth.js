@@ -1,8 +1,9 @@
 const { User } = require('../models/User');
 
 let auth = (req, res, next) => {
-  let token = req.cookies.user_auth;
-  console.log('사용자 쿠키:: ', token);
+  // let token = req.headers['authorization'].split('Bearer ')[1];
+  let token = req.headers['authorization'];
+  console.log('사용자 토큰:: ', token);
 
   User.findByToken(token, function (err, user) {
     if (err) {
