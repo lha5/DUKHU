@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -17,6 +18,8 @@ mongoose
   })
   .then(() => console.log('MongoDB is connected...'))
   .catch(error => console.error('MongoDB connecting ERROR:: ', error));
+
+app.use(cors());
 
 // application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));

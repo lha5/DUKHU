@@ -4,34 +4,34 @@ const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'NanumSquare';
     src: url('../fonts/NanumSquareL.ttf') format('truetype');
-    font-weight: lighter;
+    font-weight: 300;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'NanumSquare';
     src: url('../fonts/NanumSquareR.ttf') format('truetype');
-    font-weight: normal;
+    font-weight: 400;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'NanumSquare';
     src: url('../fonts/NanumSquareB.ttf') format('truetype');
-    font-weight: bold;
+    font-weight: 600;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'NanumSquare';
     src: url('../fonts/NanumSquareEB.ttf') format('truetype');
-    font-weight: bolder;
+    font-weight: 700;
     font-style: normal;
   }
 
   * {
     font-family: 'NanumSquare';
-    font-weight: normal;
+    font-weight: 400;
     color: ${props => props.theme.black};
   }
 

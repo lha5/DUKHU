@@ -12,6 +12,7 @@ router.get('/auth', auth, (req, res) => {
   res.status(200).json({
     _id: req.user._id,
     name: req.user.name,
+    isAuth: true,
     isAdmin: req.user.role === 0 ? false : true,
     email: req.user.email,
     image: req.user.image,
@@ -48,8 +49,9 @@ router.post('/signin', (req, res) => {
           return res.status(400).send(err);
         }
 
+        res.cookie('user_authExp', user.tokenExp)
         res
-          .cookie('dukhu_auth', user.token)
+          .cookie('user_auth', user.token)
           .status(200)
           .json({ success: true, userId: user._id });
       });
@@ -67,8 +69,66 @@ router.get('/logout', auth, (req, res) => {
   });
 });
 
-router.post('/kakao/login', (req, res) => {});
+router.post('/kakao/login', (req, res) => {
+  const profile = req.body.profile;
+  const tokenData = req.body.response;
+  console.log('받은 데이터? ', profile);
+  console.log('받은 데이터? ', tokenData);
 
-router.get('/kakao/logout', (req, res) => {});
+  User.findOne({ 'provider': 1, 'kakaoId': profile.id }, (err, user) => {
+    if (!user) {
+      console.log('기존에 로그인 한 적 없음');
+      const newUser = new User({
+        name: profile.kakao_account.profile.nickname,
+        image: profile.properties.profile_image || '',
+        provider: 1,
+        kakaoId: profile.id,
+        connectedAt: profile.connected_at
+      });
+
+      newUser.save((err, doc) => {
+        if (err) {
+          console.error('사용자 정보 저장 실패');
+          return res.json({ success: false, message: 'fail to save new user info', err });
+        }
+
+        newUser.generateToken((err, user) => {
+          if (err) {
+            console.error('토큰 발행 실패');
+            return res.status(400).json({ success: false, message: 'fail to generate token', err });
+          }
+  
+          // res.cookie('user_authExp', user.tokenExp);
+          res
+            .status(200)
+            .json({ success: true, userId: user._id, user_auth: user.token, user_authExp: user.tokenExp });
+        });
+      });
+    } else {
+      console.log('기존에 로그인 한 적 있음');
+      user.generateToken((err, user) => {
+        if (err) {
+          console.error('토큰 발행 실패');
+          return res.status(400).json({ success: false, message: 'fail to generate token', err });
+        }
+
+        // res.cookie('user_authExp', user.tokenExp);
+        res
+          .status(200)
+          .json({ success: true, userId: user._id, user_auth: user.token, user_authExp: user.tokenExp });
+      });
+    }
+  });
+});
+
+router.get('/kakao/logout', auth, (req, res) => {
+  User.findOneAndUpdate({ '_id': req.user._id }, { token: '', tokenExp: 0 }, (err, doc) => {
+    if (err) {
+      return res.json({ success: false, err });
+    }
+    // res.clearCookie('user_authExp');
+    return res.status(200).json({ success: true });
+  })
+});
 
 module.exports = router;
