@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import theme from './assets/styles/GlobalTheme';
 import GlobalStyle from './assets/styles/GlobalStyle';
+import { CookiesProvider } from 'react-cookie';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 
@@ -25,7 +26,9 @@ ReactDOM.render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <App />
+        <CookiesProvider>
+          <App />
+        </CookiesProvider>
       </ThemeProvider>
     </BrowserRouter>
   </Provider>,
