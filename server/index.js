@@ -25,6 +25,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 // application/json
 app.use(bodyParser.json());
+
 app.use(cookieParser());
 
 // using api start ----------------------------------
@@ -50,5 +51,5 @@ if (process.env.NODE_ENV === 'production') {
 
 const port = 5000;
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Dukhu server is listening at http://localhost:${port}`);
 });
