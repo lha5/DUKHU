@@ -2,9 +2,16 @@ import axios from 'axios';
 
 import { AUTH_USER } from './types';
 
+const user_token = localStorage.getItem('user_auth');
+const config = {
+  headers: {
+    Authorization: `Bearer ${user_token}`
+  }
+};
+
 export function auth() {
   const request = axios
-    .get(`${process.env.REACT_APP_URI}${process.env.REACT_APP_USER_SERVER}/auth`)
+    .get(`${process.env.REACT_APP_URI}${process.env.REACT_APP_USER_SERVER}/auth`, config)
     .then(response => response.data);
 
   return {

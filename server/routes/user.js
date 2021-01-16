@@ -71,23 +71,29 @@ router.get('/logout', auth, (req, res) => {
 });
 
 router.post('/kakao/login', async (req, res) => {
-  const code = req.body;
-  console.log('받은 데이터? ', code);
+  const tokenInfo = req.body;
+  console.log('받은 데이터? ', tokenInfo);
         
   let profile = {};
+
   const getConfig = {
-    headers: { Authorization: `Bearer ${code.access_token}` }
+    headers: {
+      Authorization: `Bearer ${tokenInfo.access_token}`,
+      'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+    },
   };
+
   if (tokenInfo) {
     await axios
       .get(`https://kapi.kakao.com/v2/user/me`, getConfig)
       .then(response => {
-        console.log('카카오 로그인 사용자 정보 가져오기 응답 값?? ', response.status, response.data);
+        console.log('카카오 로그인 사용자 정보 가져오기 응답 상태 ', response.status);
+        console.log('카카오 로그인 사용자 정보 가져오기 응답 값 ', response.data);
         if (response.status === 200) {
           console.log('카카오 로그인 사용자 정보 가져오기 완료:: ', response.data);
           profile = response.data;
         } else {
-          return res.status(500).json({ result: false });
+          return res.status(500).json({ result: false, message: '카카오 로그인 사용자 정보 가져오기 실패' });
         }
       })
       .catch(error => {
@@ -97,7 +103,7 @@ router.post('/kakao/login', async (req, res) => {
             '요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.',
             );
             console.error('error status::  ', error.response.status);
-            console.error('error headers:: ', error.response.headers);
+            // console.error('error headers:: ', error.response.headers);
             console.error('error data::    ', error.response.data);
           } else if (error.request) {
             console.error('요청이 이루어 졌으나 응답을 받지 못했습니다.');
@@ -137,11 +143,12 @@ router.post('/kakao/login', async (req, res) => {
             return res.status(400).json({ success: false, message: 'fail to generate token', err });
           }
   
-          // res.cookie('user_auth', user.token);
-          // res.cookie('user_authExp', user.tokenExp);
+          
+          res.cookie('user_authExp', user.tokenExp);
           res
+            .cookie('user_auth', user.token)
             .status(200)
-            .json({ success: true, userId: user._id, user_auth: user.token, user_authExp: user.tokenExp });
+            .json({ success: true, userId: user._id, user_auth: user.token, user_authExp: user.tokenExp, k_info: tokenInfo.access_token });
         });
       });
     } else {
@@ -152,11 +159,11 @@ router.post('/kakao/login', async (req, res) => {
           return res.status(400).json({ success: false, message: 'fail to generate token', err });
         }
 
-        // res.cookie('user_auth', user.token);
-        // res.cookie('user_authExp', user.tokenExp);
+        res.cookie('user_authExp', user.tokenExp);
         res
+          .cookie('user_auth', user.token)
           .status(200)
-          .json({ success: true, userId: user._id, user_auth: user.token, user_authExp: user.tokenExp });
+          .json({ success: true, user_id: user._id, user_auth: user.token, user_authExp: user.tokenExp, k_info: tokenInfo.access_token });
       });
     }
   });
@@ -167,7 +174,8 @@ router.get('/kakao/logout', auth, (req, res) => {
     if (err) {
       return res.json({ success: false, err });
     }
-    // res.clearCookie('user_authExp');
+    res.clearCookie('user_auth');
+    res.clearCookie('user_authExp');
     return res.status(200).json({ success: true });
   })
 });
