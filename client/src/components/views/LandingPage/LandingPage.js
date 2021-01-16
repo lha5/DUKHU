@@ -3,11 +3,21 @@ import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import momentTimezonePlugin from '@fullcalendar/moment-timezone';
+import interactionPlugin from '@fullcalendar/interaction'; // needed for dayClick
+
 const Container = styled.div`
-  border: 1px solid cyan;
   width: 1400px;
-  height: calc(100vh - 74px - 28px - 2px);
   margin: 0 auto;
+
+  div.my-calendar {
+    width: 80%;
+    margin: 35px auto;
+    font-family: 'NotoSans';
+    font-weight: 200;
+  }
 
   @media ${props => props.theme.device.desktop} {
     width: 70%;
@@ -31,7 +41,25 @@ function LandingPage() {
 
   return (
     <Container>
-      랜딩 페이지
+      {
+        user.userData && !user.userData.isAuth ? (
+          <div className="my-calendar">
+            <FullCalendar
+              plugins={[ dayGridPlugin, momentTimezonePlugin, interactionPlugin ]}
+              timeZone="local"
+              locale="ko"
+              initialView="dayGridMonth"
+              defaultTimedEventDuration="01:00:00"
+              editable={true}
+              selectable={true}
+              dayPopoverFormat="MM/DD dddd"
+              dayCellContent={date => String(date.dayNumberText).split('일')[0]}
+            />
+          </div>
+        ) : (
+          <div className="my-calendar">로그인 중</div>
+        )
+      }
     </Container>
   );
 };

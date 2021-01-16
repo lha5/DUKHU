@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { auth } from '../_actions/user_actions';
 
-export default function (SpecificComponent, option, adminRoute = null) {
+function AuthFunc(SpecificComponent, option, adminRoute = null) {
   function AuthenticationCheck(props) {
     let user = useSelector(state => state.user);
     const dispatch = useDispatch();
@@ -32,3 +32,5 @@ export default function (SpecificComponent, option, adminRoute = null) {
 
   return AuthenticationCheck;
 }
+
+export default AuthFunc;
