@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
@@ -6,10 +6,12 @@ import swal from 'sweetalert';
 import axios from 'axios';
 import moment from 'moment';
 
+import userImage from '../../../assets/images/no-image.png'
+
 const Container = styled.div`
   border: 1px solid gold;
   width: 1400px;
-  height: calc(100vh - 45px - 28px - 2px);
+  height: calc(100vh - 74px - 28px - 2px); // 나중에 제거
   margin: 0 auto;
 
   div.logout-button {
@@ -21,7 +23,6 @@ const Container = styled.div`
   img {
     width: 150px;
     height: 150px;
-    border: 1px solid red;
     border-radius: 75px;
   }
 
@@ -106,7 +107,7 @@ function MyPage() {
       <div className="my-info">
         <h3>내 정보</h3>
         <div>
-          {user.userData.image ? <img src={`${user.userData.image}`} alt="프로필-사진" /> : ''}
+          {user.userData.image ? <img src={`${user.userData.image}`} alt="프로필 사진" /> : <img src={userImage} alt="프로필 사진 없음" />}
         </div>
         <div>닉네임 : {user.userData.name || '사용자 정보 없음'}</div>
         <div>계정 정보: 카카오 {user.userData.email || '[ 이메일 없음 ]'}</div>

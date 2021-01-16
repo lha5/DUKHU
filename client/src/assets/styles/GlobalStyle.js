@@ -1,36 +1,8 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
-  @font-face {
-    font-family: 'NanumSquare';
-    src: url('../fonts/NanumSquareL.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'NanumSquare';
-    src: url('../fonts/NanumSquareR.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'NanumSquare';
-    src: url('../fonts/NanumSquareB.ttf') format('truetype');
-    font-weight: 600;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'NanumSquare';
-    src: url('../fonts/NanumSquareEB.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-  }
-
   * {
-    font-family: 'NanumSquare';
+    font-family: 'NotoSans';
     font-weight: 400;
     color: ${props => props.theme.black};
   }
