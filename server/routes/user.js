@@ -72,7 +72,7 @@ router.get('/logout', auth, (req, res) => {
 
 router.post('/kakao/login', async (req, res) => {
   const tokenInfo = req.body;
-  console.log('받은 데이터? ', tokenInfo);
+  console.log('카카오 로그인 받은 토큰 값:: ', tokenInfo);
         
   let profile = {};
 
@@ -169,13 +169,43 @@ router.post('/kakao/login', async (req, res) => {
   });
 });
 
-router.get('/kakao/logout', auth, (req, res) => {
+router.post('/kakao/logout', auth, (req, res) => {
+  const logoutUrl = 'https://kapi.kakao.com/v1/user/logout';
+  let logoutHeader = req.body.kakao_token;
+
+  axios
+    .post(logoutUrl, null, { headers: { Authorization: `Bearer ${logoutHeader}` } })
+    .then(response => {
+      console.log('카카오 로그인 로그아웃 응답 상태:: ', response.status);
+      console.log('카카오 로그인 로그아웃 응답 값:: ', response.data);
+    })
+    .catch(error => {
+      console.log('카카오 로그인 로그아웃 실패');
+      if (error.response) {
+        console.error(
+          '요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.',
+          );
+          console.error('error status::  ', error.response.status);
+          console.error('error headers:: ', error.response.headers);
+          console.error('error data::    ', error.response.data);
+        } else if (error.request) {
+          console.error('요청이 이루어 졌으나 응답을 받지 못했습니다.');
+          console.error('error::  ', error.request);
+        } else {
+          console.error(
+            '오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.',
+          );
+          console.error('error:: ', error.message);
+        }
+        console.error(error.config);
+        return res.status(500).json({ result: false, message: '카카오 로그인 로그아웃 실패' });
+    });
+
   User.findOneAndUpdate({ '_id': req.user._id }, { token: '', tokenExp: 0 }, (err, doc) => {
     if (err) {
       return res.json({ success: false, err });
     }
-    res.clearCookie('user_auth');
-    res.clearCookie('user_authExp');
+
     return res.status(200).json({ success: true });
   })
 });

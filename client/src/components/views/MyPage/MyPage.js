@@ -53,13 +53,24 @@ function MyPage() {
     })
     .then(value => {
       if (value) {
+        const config = {
+          headers: { Authorization: `Bearer ${localStorage.getItem('user_auth')}` }
+        };
+        const dataToSubmit = {
+          kakao_token: localStorage.getItem('k_info')
+        };
+
         axios
-          .get(`${process.env.REACT_APP_URI}${process.env.REACT_APP_USER_SERVER}/kakao/logout`)
+          .post(`${process.env.REACT_APP_URI}${process.env.REACT_APP_USER_SERVER}/kakao/logout`, dataToSubmit, config)
           .then(response => {
-            console.log('응답 값?? ', response.status, response.data);
-            if (response.data.success) {
-              localStorage.removeItem('token');
+            console.log('카카오 로그아웃 응답 상태:: ', response.status);
+            console.log('카카오 로그아웃 응답 값:: ', response.data);
+            if (response.status === 200) {
+              localStorage.removeItem('k_info');
               localStorage.removeItem('userId');
+              localStorage.removeItem('user_auth');
+              localStorage.removeItem('user_authExp');
+
               window.location.replace('/');
             } else {
               swal({
@@ -68,8 +79,7 @@ function MyPage() {
                 icon: 'error'
               });
             }
-          })
-          .catch(error => console.log('로그아웃 실패:: ', error));
+          }).catch(error => console.error('로그아웃 실패:: ', error));
       } else {
         return false;
       }
