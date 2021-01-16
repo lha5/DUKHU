@@ -11,7 +11,6 @@ import userImage from '../../../assets/images/no-image.png'
 const Container = styled.div`
   border: 1px solid gold;
   width: 1400px;
-  height: calc(100vh - 74px - 28px - 2px); // 나중에 제거
   margin: 0 auto;
 
   div.logout-button {
@@ -107,11 +106,11 @@ function MyPage() {
       <div className="my-info">
         <h3>내 정보</h3>
         <div>
-          {user.userData.image ? <img src={`${user.userData.image}`} alt="프로필 사진" /> : <img src={userImage} alt="프로필 사진 없음" />}
+          {user.userData && user.userData.image ? <img src={`${user.userData.image}`} alt="프로필 사진" /> : <img src={userImage} alt="프로필 사진 없음" />}
         </div>
-        <div>닉네임 : {user.userData.name || '사용자 정보 없음'}</div>
-        <div>계정 정보: 카카오 {user.userData.email || '[ 이메일 없음 ]'}</div>
-        <div>가입 일자: {(user.userData.connectedAt && moment(user.userData.connectedAt).format('YYYY[년] MM[월] DD[일]')) || '사용자 정보 없음'}</div>
+        <div>닉네임 : {user.userData && user.userData.name || '사용자 정보 없음'}</div>
+        <div>계정 정보: 카카오 {user.userData && user.userData.email || '[ 이메일 없음 ]'}</div>
+        <div>가입 일자: {(user.userData && user.userData.connectedAt && moment(user.userData.connectedAt).format('YYYY[년] MM[월] DD[일]')) || '사용자 정보 없음'}</div>
       </div>
     </Container>
   );

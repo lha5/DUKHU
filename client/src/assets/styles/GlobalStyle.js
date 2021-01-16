@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyle = createGlobalStyle`
   * {
     font-family: 'NotoSans';
-    font-weight: 400;
+    font-weight: 300;
     color: ${props => props.theme.black};
   }
 

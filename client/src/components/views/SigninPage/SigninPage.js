@@ -38,7 +38,7 @@ function SigninPage(props) {
   return (
     <Container>
       <a href={`${host}&client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`}>
-        <img src={KakaoLoginButton} />
+        <img src={KakaoLoginButton} alt="카카오 로그인 버튼" />
       </a>
     </Container>
   )

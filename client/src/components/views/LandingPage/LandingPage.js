@@ -16,6 +16,7 @@ const Container = styled.div`
     width: 80%;
     margin: 35px auto;
     font-family: 'NotoSans';
+    font-weight: 200;
   }
 
   @media ${props => props.theme.device.desktop} {
@@ -40,20 +41,25 @@ function LandingPage() {
 
   return (
     <Container>
-      <div className="my-calendar">
-        <FullCalendar
-          plugins={[ dayGridPlugin, momentTimezonePlugin, interactionPlugin ]}
-          timeZone="local"
-          locale="ko"
-          initialView="dayGridMonth"
-          timeFormat="HH:mm"
-          defaultTimedEventDuration="01:00:00"
-          editable={true}
-          selectable={true}
-          dayPopoverFormat="MM/DD dddd"
-          dayCellContent={date => String(date.dayNumberText).split('일')[0]}
-        />
-      </div>
+      {
+        user.userData && !user.userData.isAuth ? (
+          <div className="my-calendar">
+            <FullCalendar
+              plugins={[ dayGridPlugin, momentTimezonePlugin, interactionPlugin ]}
+              timeZone="local"
+              locale="ko"
+              initialView="dayGridMonth"
+              defaultTimedEventDuration="01:00:00"
+              editable={true}
+              selectable={true}
+              dayPopoverFormat="MM/DD dddd"
+              dayCellContent={date => String(date.dayNumberText).split('일')[0]}
+            />
+          </div>
+        ) : (
+          <div className="my-calendar">로그인 중</div>
+        )
+      }
     </Container>
   );
 };
