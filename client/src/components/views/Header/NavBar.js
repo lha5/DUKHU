@@ -4,24 +4,28 @@ import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 
+import logo from '../../../assets/images/logo.png'
+
 const Container = styled.div`
-  border: 1px solid red;
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   width: 1400px;
   margin: 0 auto;
 
   div.page-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin: 10px 0 10px 25px;
+    margin-left: 15px;
+
+    img {
+      display: block;
+      width: 100px;
+      margin: 12px auto;
+    }
   }
 
   div.user-menu {
-    border: 1px solid pink;
-    margin: 10px 25px 10px 0;
-    height: fit-content;
+    margin-right: 15px;
   }
 
   @media ${props => props.theme.device.desktop} {
@@ -29,22 +33,22 @@ const Container = styled.div`
   }
 
   @media ${props => props.theme.device.labtop} {
-    width: 65%;
+    width: 70%;
   }
 
   @media ${props => props.theme.device.tablet} {
-    width: 100%;
+    width: 80%;
   }
 
   @media ${props => props.theme.device.mobile} {
-    width: 100%;
+    width: 85%;
   }
 `;
 
 function NavBar() {
   const user = useSelector(state => state.user);
 
-  const isLogin = () => {
+  const isLoggedin = () => {
     if (user.userData && !user.userData.isAuth) {
       return (
         <div className="user-menu">
@@ -62,15 +66,18 @@ function NavBar() {
         </div>
       );
     }
-  };
+  }
+
   return (
     <Container>
       <Link to="/">
-        <div className="page-title">아임덕후_I'm Dukhu</div>
+        <div className="page-title">
+          <img src={logo} alt="아임덕후" />
+        </div>
       </Link>
-      {isLogin()}
+      {isLoggedin()}
     </Container>
   );
-};
+}
 
 export default NavBar;

@@ -18,7 +18,8 @@ router.get('/auth', auth, (req, res) => {
     email: req.user.email,
     image: req.user.image,
     provider: req.user.provider,
-    kakaoId: req.user.kakaoId
+    kakaoId: req.user.kakaoId,
+    connectedAt: req.user.connectedAt
   });
 });
 
