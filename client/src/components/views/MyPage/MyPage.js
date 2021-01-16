@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import swal from 'sweetalert';
 import axios from 'axios';
+import moment from 'moment';
 
 const Container = styled.div`
   border: 1px solid gold;
@@ -12,6 +14,15 @@ const Container = styled.div`
 
   div.logout-button {
     cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  img {
+    width: 150px;
+    height: 150px;
+    border: 1px solid red;
+    border-radius: 75px;
   }
 
   @media ${props => props.theme.device.desktop} {
@@ -19,19 +30,21 @@ const Container = styled.div`
   }
 
   @media ${props => props.theme.device.labtop} {
-    width: 65%;
+    width: 70%;
   }
 
   @media ${props => props.theme.device.tablet} {
-    width: 100%;
+    width: 80%;
   }
 
   @media ${props => props.theme.device.mobile} {
-    width: 100%;
+    width: 85%;
   }
 `;
 
 function MyPage() {
+  const user = useSelector(state => state.user);
+
   const onLogout = () => {
     swal({
       title: '로그아웃 하시겠습니까?',
@@ -88,8 +101,17 @@ function MyPage() {
 
   return (
     <Container>
-      <div>로그인한 사용자만 볼 수 있는 페이지</div>
+      <h1>로그인한 사용자만 볼 수 있는 페이지</h1>
       <div className="logout-button" onClick={onLogout}>로그아웃</div>
+      <div className="my-info">
+        <h3>내 정보</h3>
+        <div>
+          {user.userData.image ? <img src={`${user.userData.image}`} alt="프로필-사진" /> : ''}
+        </div>
+        <div>닉네임 : {user.userData.name || '사용자 정보 없음'}</div>
+        <div>계정 정보: 카카오 {user.userData.email || '[ 이메일 없음 ]'}</div>
+        <div>가입 일자: {(user.userData.connectedAt && moment(user.userData.connectedAt).format('YYYY[년] MM[월] DD[일]')) || '사용자 정보 없음'}</div>
+      </div>
     </Container>
   );
 };

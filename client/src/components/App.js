@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Auth from '../hoc/auth';
 
-import NavBar from './views/NavBar/NavBar';
+import NavBar from './views/Header/NavBar';
 import LandingPage from './views/LandingPage/LandingPage';
 import SignInPage from './views/SigninPage/SigninPage';
 import SignInProcessPage from './views/SigninPage/SignInProcessPage';
